@@ -1,0 +1,8 @@
+# dependencies
+node_modules/
+
+# ignored for npm library
+package-lock.json
+
+# macos
+.DS_Store

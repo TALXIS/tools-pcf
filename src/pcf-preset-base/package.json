@@ -1,0 +1,40 @@
+{
+  "name": "@talxis/pcf-preset-base",
+  "version": "0.0.1",
+  "description": "Shared dependencies for PowerApps Component Framework (PCF) controls",
+  "bin": {
+    "pcf-scripts": "./bin/pcf-scripts.js"
+  },
+  "scripts": {
+    "build": "echo 'No build step required for shared dependencies package'",
+    "postinstall": "node scripts/fix-pcfscripts.js"
+  },
+  "keywords": [],
+  "author": "TALXIS",
+  "license": "MIT",
+  "main": "",
+  "types": "",
+  "dependencies": {
+    "pcf-scripts": "1.48.2",
+    "pcf-start": "1.48.2",
+    "@eslint/js": "9.25.1",
+    "@microsoft/eslint-plugin-power-apps": "0.3.7",
+    "eslint": "9.25.1",
+    "eslint-plugin-promise": "7.1.0",
+    "globals": "15.15.0",
+    "typescript-eslint": "8.31.0",
+    "@svgr/webpack": "8.1.0"
+  },
+  "devDependencies": {
+  },
+  "peerDependencies": {
+    "typescript": "5.8.3"
+  },
+  "files": [
+    "bin",
+    "scripts",
+    "eslint.config.mjs",
+    "tsconfig.base.json",
+    "README.md"
+  ]
+}
