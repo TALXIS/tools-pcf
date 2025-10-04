@@ -1,0 +1,39 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [created]`
+
+permissions:
+  id-token: write
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+      # Ensure npm 11.5.1 or later is installed - https://docs.npmjs.com/trusted-publishers#github-actions-configuration
+      - name: Update npm
+        run: npm install -g npm@latest
+      - name: Set package.json version from release tag
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          VERSION=${VERSION#v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        id: version
+      - name: Update pcf-preset-base package version
+        run: npm version --no-git-tag-version "${{ steps.version.outputs.VERSION }}"
+        working-directory: src/pcf-preset-base
+      # We don't run npm install or build because there's nothing to be done in this package
+      - name: pcf-preset-base publish
+        run: |
+          npm publish
+          echo "published=true" >> $GITHUB_OUTPUT
+        working-directory: src/pcf-preset-base
+        id: publish
