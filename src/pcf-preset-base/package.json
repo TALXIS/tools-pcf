@@ -28,7 +28,8 @@
     "eslint-plugin-promise": "7.1.0",
     "globals": "15.15.0",
     "typescript-eslint": "8.31.0",
-    "@svgr/webpack": "8.1.0"
+    "@svgr/webpack": "8.1.0",
+    "esbuild": "0.25.10"
   },
   "devDependencies": {
   },
@@ -38,6 +39,7 @@
   "files": [
     "bin",
     "scripts",
+    "helpers",
     "eslint.config.mjs",
     "tsconfig.base.json",
     "README.md"
