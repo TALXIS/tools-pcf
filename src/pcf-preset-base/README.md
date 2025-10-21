@@ -60,3 +60,14 @@ This package's version doesn't follow Microsoft's versions and instead is rather
 
 ## Developing
 
+When testing in your projects, you may want to link the package like so in `package.json`:
+
+```json
+{
+    "devDependencies": {
+        "@talxis/pcf-preset-base": "file:C:/Users/hajek/Source/repos/TALXIS/tools-pcf/src/pcf-preset-base"
+    }
+}
+```
+
+After that, run `npm install` or `rush update` (based on where you're at). You have to run it whenever you make a change to package.
