@@ -21,13 +21,12 @@ Enable custom Webpack via adding the following into `featureconfig.json`:
 Then create `webpack.config.js` and add the following:
 
 ```javascript
-import { extendWebpackConfig } from "@talxis/pcf-preset-base/webpack.config.base.js`;
+const { extendWebpackConfig } = require("@talxis/pcf-preset-base/webpack.config.base.js");
 
-const customConfig = {
-    // ...
-};
-extendWebpackConfig(customConfig);
-module.exports = customConfig;
+const config = { /* ... */ };
+extendWebpackConfig(config);
+
+module.exports = config;
 ```
 
 Aditionally, the base config also exposes `getBuildMode` which you can use to either check for `production` or other value.
@@ -58,3 +57,6 @@ You can read more about this [here](https://hajekj.net/2025/10/05/speeding-up-pc
 ## Versions
 
 This package's version doesn't follow Microsoft's versions and instead is rather opinionated by [NETWORG](https://www.networg.com). See [Releases](https://github.com/TALXIS/tools-pcf/releases) for changelog and history.
+
+## Developing
+

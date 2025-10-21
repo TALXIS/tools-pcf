@@ -42,6 +42,7 @@
     "helpers",
     "eslint.config.mjs",
     "tsconfig.base.json",
+    "webpack.config.base.js",
     "README.md"
   ]
 }
