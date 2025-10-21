@@ -5,5 +5,5 @@ export const getBuildMode = () => {
 };
 
 export const extendWebpackConfig = (customConfig) => {
-    customConfig.devtool = getBuildMode() === "production" ? "source-map" : "inline-source-map";
+    customConfig.devtool = getBuildMode() === "production" ? false : "inline-source-map";
 };

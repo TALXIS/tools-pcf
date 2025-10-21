@@ -9,7 +9,7 @@ Simply add this package to your `package.json` (via `npm install` or similar), r
 ### Default Webpack config
 
 This package also provides additional defaults for `webpack.config.js`. The current defaults are:
-* Source maps - when building a production build, a `bundle.js.map` will be generated and included in the output solution, with development build, source map will be embedded inline (`inline-source-map`) so that the control can be easily debugged with Fiddler.
+* Source maps - when building a development build, source map will be embedded inline (`inline-source-map`) so that the control can be easily debugged with Fiddler.
 
 Enable custom Webpack via adding the following into `featureconfig.json`:
 
