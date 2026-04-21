@@ -99,7 +99,7 @@ function modifyWebpackConfig(packagePath) {
 function findNearestNodeModules(startDir) {
     let dir = startDir;
     while (dir !== path.parse(dir).root) {
-        const candidate = path.join(dir, 'node_modules');
+        const candidate = path.join(dir, 'node_modules/pcf-scripts');
         if (fs.existsSync(candidate) && fs.lstatSync(candidate).isDirectory()) {
             return candidate;
         }
@@ -110,12 +110,12 @@ function findNearestNodeModules(startDir) {
 
 function main() {
     const nodeModulesPath = findNearestNodeModules(__dirname);
-    if (!fs.existsSync(nodeModulesPath)) {
-        console.error('node_modules directory not found.');
+    if (!nodeModulesPath) {
+        console.error('pcf-scripts directory not found.');
         return;
     }
-
-    console.log(`Scanning for pcf-scripts packages in ${nodeModulesPath}`);
+    
+    console.log(`Patching pcf-scripts in ${nodeModulesPath}`);
 
     const pcfScriptsPackages = findPcfScriptsPackages(nodeModulesPath);
     for (const packagePath of pcfScriptsPackages) {
