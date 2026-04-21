@@ -96,8 +96,20 @@ function modifyWebpackConfig(packagePath) {
     }
 }
 
+function findNearestNodeModules(startDir) {
+    let dir = startDir;
+    while (dir !== path.parse(dir).root) {
+        const candidate = path.join(dir, 'node_modules');
+        if (fs.existsSync(candidate) && fs.lstatSync(candidate).isDirectory()) {
+            return candidate;
+        }
+        dir = path.dirname(dir);
+    }
+    return null;
+}
+
 function main() {
-    const nodeModulesPath = path.resolve(__dirname, '../node_modules/');
+    const nodeModulesPath = findNearestNodeModules(__dirname);
     if (!fs.existsSync(nodeModulesPath)) {
         console.error('node_modules directory not found.');
         return;
