@@ -28,7 +28,7 @@ function modifyWebpackConfig(packagePath) {
     const webpackConfigPath = path.join(packagePath, 'webpackConfig.js');
     if (fs.existsSync(webpackConfigPath)) {
         let content = fs.readFileSync(webpackConfigPath, 'utf8');
-        
+
         const jsMatchRegex = /\/\/ Tell webpack how to handle JS, JSX, MJS, or MJSX files/;
         const jsMatch = content.match(jsMatchRegex);
         const prefix = `// Modified by @talxis/pcf-preset-base`;
@@ -48,21 +48,21 @@ function modifyWebpackConfig(packagePath) {
                 let replacement = `    ${prefix}\n                    exclude: /node_modules/,\n                `;
                 jsLoaderCode = jsLoaderCode.replace(/}$/, `${replacement}}`);
                 console.log(`${jsLoaderCode}`);
-                
+
                 content = content.substring(0, startIndex) + jsLoaderCode + content.substring(endIndex);
             }
         }
-        
+
         const cssMatchRegex = /{[\s]*test: \/\\\.css\$\/,[\s\S]*?},/;
         const cssMatch = content.match(cssMatchRegex);
         console.log(`cssMatch: ${cssMatch}`);
         if (cssMatch) {
             let cssLoaderCode = cssMatch[0];
-            if(cssLoaderCode.includes(prefix)) {
+            if (cssLoaderCode.includes(prefix)) {
                 console.log(`webpackConfig.js CSS code already modified: ${cssLoaderCode}, ${webpackConfigPath}`);
                 return;
             }
-            if(cssLoaderCode.includes('require.resolve')) {
+            if (cssLoaderCode.includes('require.resolve')) {
                 console.error(`webpackConfig.js CSS code already has require.resolve: ${cssLoaderCode}, ${webpackConfigPath}`);
                 return;
             }
@@ -76,11 +76,11 @@ function modifyWebpackConfig(packagePath) {
         console.log(`svgMatch: ${svgMatch}`);
         if (svgMatch) {
             let svgLoaderCode = svgMatch[0];
-            if(svgLoaderCode.includes(prefix)) {
+            if (svgLoaderCode.includes(prefix)) {
                 console.log(`webpackConfig.js SVG code already modified: ${svgLoaderCode}, ${webpackConfigPath}`);
                 return;
             }
-            if(svgLoaderCode.includes('require.resolve')) {
+            if (svgLoaderCode.includes('require.resolve')) {
                 console.error(`webpackConfig.js SVG code already has require.resolve: ${svgLoaderCode}, ${webpackConfigPath}`);
                 return;
             }
@@ -96,18 +96,32 @@ function modifyWebpackConfig(packagePath) {
     }
 }
 
+function findNodeModulesPaths(startDir) {
+    let dir = startDir;
+    const foundPaths = [];
+    while (dir !== path.parse(dir).root) {
+        const candidate = path.join(dir, 'node_modules');
+        if (fs.existsSync(candidate) && fs.lstatSync(candidate).isDirectory()) {
+            foundPaths.push(candidate);
+        }
+        dir = path.dirname(dir);
+    }
+    return foundPaths;
+}
+
 function main() {
-    const nodeModulesPath = path.resolve(__dirname, '../node_modules/');
-    if (!fs.existsSync(nodeModulesPath)) {
+    const nodeModulesPaths = findNodeModulesPaths(__dirname);
+    if (nodeModulesPaths.length === 0) {
         console.error('node_modules directory not found.');
         return;
     }
+    for (const nodeModulesPath of nodeModulesPaths) {
+        console.log(`Scanning for pcf-scripts packages in ${nodeModulesPath}`);
 
-    console.log(`Scanning for pcf-scripts packages in ${nodeModulesPath}`);
-
-    const pcfScriptsPackages = findPcfScriptsPackages(nodeModulesPath);
-    for (const packagePath of pcfScriptsPackages) {
-        modifyWebpackConfig(packagePath);
+        const pcfScriptsPackages = findPcfScriptsPackages(nodeModulesPath);
+        for (const packagePath of pcfScriptsPackages) {
+            modifyWebpackConfig(packagePath);
+        }
     }
 }
 
