@@ -7,8 +7,11 @@ const path = require('path');
 
 function findPcfScriptsPackages(nodeModulesPath) {
     const packages = [];
-    packages.push(require.resolve("pcf-scripts/webpackConfig.js", { paths: [nodeModulesPath] }).replace(`${path.sep}webpackConfig.js`, ''));
-    console.log(`Resolved pcf-scripts package: ${packages[0]}`);
+    const pcfScriptsPath = path.join(nodeModulesPath, 'pcf-scripts');
+    if (fs.existsSync(path.join(pcfScriptsPath, 'webpackConfig.js'))) {
+        packages.push(pcfScriptsPath);
+        console.log(`Resolved pcf-scripts package: ${packages[0]}`);
+    }
     // const dirs = fs.readdirSync(nodeModulesPath, { withFileTypes: true });
 
     // for (const dir of dirs) {
@@ -126,4 +129,3 @@ function main() {
 }
 
 main();
-
